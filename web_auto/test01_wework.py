@@ -15,6 +15,8 @@ from selenium.webdriver.support.wait import WebDriverWait
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.chrome.service import Service
 
+from utils.screen_utils import ScreenUtil
+
 
 # service = Service(executable_path=ChromeDriverManager().install())
 # driver = webdriver.Chrome(service=service)
@@ -34,6 +36,7 @@ class TestWeWork:
         self.driver.get("https://work.weixin.qq.com/wework_admin/loginpage_wx?from=myhome")
         # 使用 cookie 登录
         # 从文件中获取 cookie 信息登陆
+        # with open("cookie.yaml", "r", encoding="utf-8") as f:
         with open("web_auto/cookie.yaml", "r", encoding="utf-8") as f:
             cookies = yaml.safe_load(f)
         for cookie in cookies:
@@ -90,6 +93,8 @@ class TestWeWork:
             name_list = []
             for n in names:
                 name_list.append(n.text)
+                # ScreenUtil.get_screen()
+            ScreenUtil().get_screen(self.driver)
             # 断言新添加成员姓名在列表中
             assert name in name_list
 
@@ -134,26 +139,28 @@ class TestWeWork:
             self.driver.find_element(By.ID,"memberAdd_acctid").send_keys(mid)
         with allure.step("输入手机号"):
             self.driver.find_element(By.ID,"memberAdd_phone").send_keys(phone)
-        #
-        # with allure.step("保存"):
-        #     self.driver.find_element(By.CSS_SELECTOR,".js_btn_save").click()
+        with allure.step("保存"):
+            self.driver.find_element(By.CSS_SELECTOR,".js_btn_save").click()
 
         with allure.step("断言添加成员失败，账号被占用"):
-            WebDriverWait(self.driver, 10).until(
-                expected_conditions.visibility_of_element_located((By.XPATH, '//*[@id="memberAdd_acctid"]/following-sibling::*[1]'))
+
+            WebDriverWait(self.driver, 15).until(
+                expected_conditions.visibility_of_element_located((By.CSS_SELECTOR,".ww_inputWithTips_WithErr"))
             )
             tip_ele = self.driver.find_element(By.XPATH, '//*[@id="memberAdd_acctid"]/following-sibling::*[1]')
             tips = tip_ele.text
             expected = f"该账号已被“{name}”占有"
+            ScreenUtil().get_screen(self.driver)
             # 断言
             assert tips == expected
-            # time.sleep(100)
+
         with allure.step("取消"):
             self.driver.find_element(By.CSS_SELECTOR,".js_btn_cancel").click()
 
-        with allure.step("离开此页"):
-            WebDriverWait(self.driver,10).until(expected_conditions.element_to_be_clickable((By.XPATH,"//*[@node-type='cancel']"))).click()
-            # self.driver.find_element(By.XPATH,"//*[@node-type='cancel']").click()
+        #公司电脑无此步骤，奇怪
+        # with allure.step("离开此页"):
+        #     WebDriverWait(self.driver,10).until(expected_conditions.element_to_be_clickable((By.XPATH,"//*[@node-type='cancel']"))).click()
+
 
         with allure.step("断言列表中不存在重复账号"):
             # 获取成员列表信息
@@ -166,6 +173,7 @@ class TestWeWork:
             name_list = []
             for n in names:
                 name_list.append(n.text)
+            ScreenUtil().get_screen(self.driver)
             # 断言新添加成员姓名在列表中
             assert mname not in name_list
 
