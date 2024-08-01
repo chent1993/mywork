@@ -17,12 +17,11 @@ class MainPage(BasePage):
 
     def goto_contact(self):
         """进入通讯录页面"""
-        self.driver.find_element(By.ID, "menu_contacts").click()
 
-        # 等待成员列表加载完毕
-        WebDriverWait(self.driver, 15).until(
-            expected_conditions.visibility_of_element_located((By.ID, "member_list"))
-        )
+        self.find_ele_click(By.ID, "menu_contacts")
+
+        self.wait_locate(By.ID,"member_list")
+
         return ContactPage(self.driver)
 
     def goto_add_member(self):

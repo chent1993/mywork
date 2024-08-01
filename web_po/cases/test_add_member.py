@@ -13,11 +13,11 @@ class TestAddMember:
     def teardown_class(self):
         # ...
         # 关闭浏览器
-        self.login.quit()
+        self.login.close_brower()
 
     def test_add_member_success(self):
         """添加成员成功"""
-        res = self.login.login_by_cookie().goto_contact().goto_add_member().add_member_success().get_user_info()
+        res = self.login.login().goto_contact().goto_add_member().add_member_success().get_user_info()
 
         assert "haha" in res
 

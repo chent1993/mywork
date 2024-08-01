@@ -21,16 +21,16 @@ class AddMemberPage(BasePage):
         self.fake = Faker("zh_CN")
         # name = self.fake.name()
         name = "haha"
-        self.driver.find_element(By.ID,"username").send_keys(name)
+        self.find_ele_sendkeys(By.ID,"username",name)
 
         mid = self.fake.uuid4()
-        self.driver.find_element(By.ID,"memberAdd_acctid").send_keys(mid)
+        self.find_ele_sendkeys(By.ID,"memberAdd_acctid",mid)
 
         phone = self.fake.phone_number()
-        self.driver.find_element(By.ID,"memberAdd_phone").send_keys(phone)
+        self.find_ele_sendkeys(By.ID,"memberAdd_phone",phone)
 
 
-        self.driver.find_element(By.CSS_SELECTOR,".js_btn_save").click()
+        self.find_ele_click(By.CSS_SELECTOR,".js_btn_save")
 
         return ContactPage(self.driver)
     def add_member_fail(self):
