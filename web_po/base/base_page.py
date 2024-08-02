@@ -38,7 +38,7 @@ class BasePage:
         self.find_ele(by,locate).click()
     def find_ele_sendkeys(self, by, locate,text):
         """找到一个元素，并输入文本"""
-        self.find_ele(by,locate).sendKeys(text)
+        self.find_ele(by,locate).send_keys(text)
     def find_eles(self,by,locate):
         """找多个元素"""
         eles = self.driver.find_elements(by,locate)
@@ -48,9 +48,8 @@ class BasePage:
         self.driver.get(url)
     def wait_locate(self,by,locate,timeout=10):
         """显示等待"""
-        # 等待成员列表加载完毕
         WebDriverWait(self.driver, timeout).until(
-            expected_conditions.visibility_of_element_located((by, timeout))
+            expected_conditions.visibility_of_element_located((by, locate))
         )
     def login_by_cookie(self):
         """使用cookie登录"""

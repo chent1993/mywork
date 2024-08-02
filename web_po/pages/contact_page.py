@@ -3,6 +3,8 @@
 # @Author : tian
 # @File : contact_page.py
 # @desc :
+import time
+
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions
 from selenium.webdriver.support.wait import WebDriverWait
@@ -16,7 +18,9 @@ class ContactPage(BasePage):
     def goto_add_member(self):
         """进入添加成员页面"""
         # 等待成员列表加载完毕
-        self.wait_locate(By.ID, "member_list")
+
+        self.wait_locate(By.ID, "member_list",15)
+
         self.find_ele_click(By.CSS_SELECTOR, ".ww_operationBar .js_add_member")
 
         from web_po.pages.add_member_page import AddMemberPage

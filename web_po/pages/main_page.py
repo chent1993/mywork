@@ -20,8 +20,6 @@ class MainPage(BasePage):
 
         self.find_ele_click(By.ID, "menu_contacts")
 
-        self.wait_locate(By.ID,"member_list")
-
         return ContactPage(self.driver)
 
     def goto_add_member(self):
