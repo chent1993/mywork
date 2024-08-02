@@ -11,6 +11,8 @@ def print_hi(name):
 
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
-    print_hi('PyCharm')
+    name ="aaa"
+    expected = f"该账号已被“{name}”占有"
+    print_hi(expected)
 
 # See PyCharm help at https://www.jetbrains.com/help/pycharm/
