@@ -4,6 +4,7 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 
 from utils.log_utils import logger
+from utils.screen_utils import ScreenUtil
 
 
 class TestDataRecord:
@@ -48,6 +49,8 @@ class TestDataRecord:
         重要的业务场景页面
         容易出错的页面
         '''
+        sc = ScreenUtil()
+        sc.get_screen(self.driver)
         self.driver.save_screenshot("search_res.png")
         assert search_res.text == search_content
 
