@@ -13,11 +13,11 @@ from web_po.pages.login_page import LoginPage
 class TestAddMember:
     def setup_class(self):
         self.login=LoginPage()
+        self.page =self.login.login()
 
     def teardown_class(self):
-        ...
         # 关闭浏览器
-        # self.login.close_brower()
+        self.login.close_brower()
 
     @allure.title("添加成员成功")
     @allure.description("输入正确的成员信息，添加成功")
@@ -25,10 +25,9 @@ class TestAddMember:
         """添加成员成功"""
         self.fake = Faker("zh_CN")
         name = self.fake.name()
-        # name = "haha"
         mid = self.fake.uuid4()
         phone = self.fake.phone_number()
-        res = self.login.login().goto_contact().goto_add_member().add_member_success(name=name,accid=mid,phone=phone).get_user_info()
+        res = self.page.goto_contact().goto_add_member().add_member_success(name=name,accid=mid,phone=phone).get_user_info()
 
         assert name in res
 
@@ -41,16 +40,21 @@ class TestAddMember:
 
         mid = self.fake.uuid4()
         phone = self.fake.phone_number()
-        self.login.login().goto_contact().goto_add_member().add_member_success(name=name, accid=mid,
+        res = self.page.goto_contact().goto_add_member().add_member_success(name=name, accid=mid,
                                                                                      phone=phone).get_user_info()
-        mname = self.fake.name()
-        tips = self.login.login().goto_contact().goto_add_member().add_member_fail(name=mname, accid=mid,
-                                                                               phone=phone)
+        assert name in res
+
+        new_name = self.fake.name()
+        new_phone = self.fake.phone_number()
+        add_member_page = self.page.goto_contact().goto_add_member().add_member_fail(name=new_name, accid=mid,
+                                                                               phone=new_phone)
+        tips = add_member_page.get_fail_tips()
 
         expected = f"该账号已被“{name}”占有"
 
         assert tips == expected
-        res = self.login.login().goto_contact().get_user_info()
-        assert mname not in res
+
+        result = add_member_page.goto_contact_by_cancel().get_user_info()
+        assert new_name not in result
 
 

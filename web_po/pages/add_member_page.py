@@ -24,7 +24,7 @@ class AddMemberPage(BasePage):
     _TIPS_TEXT = By.XPATH, '//*[@id="memberAdd_acctid"]/following-sibling::*[1]'
     _BTN_CANCEL = By.CSS_SELECTOR,".js_btn_cancel"
 
-    _LEAVE_PAGE = By.XPATH, "//*[@node-type='cancel']"
+    # _LEAVE_PAGE = By.XPATH, "//*[@node-type='cancel']"
     @allure.step("添加成员成功")
     def add_member_success(self,name,accid,phone):
         """添加成员成功"""
@@ -41,8 +41,10 @@ class AddMemberPage(BasePage):
         logger.info(f"添加成员{name}")
         self.screen_image()
         return ContactPage(self.driver)
+
+    @allure.step("输出成员信息（重复），添加成员失败")
     def add_member_fail(self,name,accid,phone):
-        """添加成员失败"""
+        """输出成员信息（重复）添加成员失败 返回当前页面"""
         self.wait_locate(*self._NAME, 15)
 
         self.find_ele_sendkeys(*self._NAME,name)
@@ -54,12 +56,21 @@ class AddMemberPage(BasePage):
 
         self.find_ele_click(*self._BTN_SAVE)
         logger.info(f"添加成员{name}")
-        self.wait_locate(*self._TIPS_ERR)
+        return self
 
+    @allure.step("获取错误提示信息")
+    def get_fail_tips(self):
+        """获取错误提示信息"""
+        self.wait_locate(*self._TIPS_ERR)
         tip_ele = self.find_ele(*self._TIPS_TEXT)
         self.screen_image()
+        tips = tip_ele.text
 
-        self.find_ele_click(*self._BTN_CANCEL)
-        # self.wait_click(*self._LEAVE_PAGE,15)
+        return tips
 
-        return tip_ele.text
+    @allure.step("通过点击取消按钮，返回通讯录页面")
+    def goto_contact_by_cancel(self):
+        """通过点击取消按钮返回通讯录页面"""
+        self.find_eles(*self._BTN_CANCEL)[0].click()
+        # self.wait_click(*self._LEAVE_PAGE, 15)
+        return ContactPage(self.driver)

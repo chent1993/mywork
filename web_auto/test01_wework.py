@@ -157,9 +157,9 @@ class TestWeWork:
         with allure.step("取消"):
             self.driver.find_element(By.CSS_SELECTOR,".js_btn_cancel").click()
 
-        #公司电脑无此步骤，奇怪
-        with allure.step("离开此页"):
-            WebDriverWait(self.driver,10).until(expected_conditions.element_to_be_clickable((By.XPATH,"//*[@node-type='cancel']"))).click()
+        #点击保存后再点击取消，就不会弹窗
+        # with allure.step("离开此页"):
+        #     WebDriverWait(self.driver,10).until(expected_conditions.element_to_be_clickable((By.XPATH,"//*[@node-type='cancel']"))).click()
 
 
         with allure.step("断言列表中不存在重复账号"):
