@@ -120,7 +120,7 @@ class TestWeWorkContact:
         tips = self.driver.find_element(
             AppiumBy.XPATH,
             "//*[@class='android.widget.Toast']").text
-        assert tips == "添加成功"
+        assert "添加成功" == tips
 
     def swipe_window(self):
         '''

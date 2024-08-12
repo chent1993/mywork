@@ -9,7 +9,9 @@ from appium.options.common import AppiumOptions
 from app_po.base.base_page import BasePage
 
 
-
+"""
+企业微信 app 启动入口
+"""
 class WeworkApp(BasePage):
 
     def start(self):
@@ -30,7 +32,6 @@ class WeworkApp(BasePage):
         caps["appium:noReset"] = True
         # 每次初始化driver 强制app重启
         caps["appium:forceAppLaunch"] = True
-        print(caps)
         # 定义 appium 配置项
         options = AppiumOptions().load_capabilities(caps)
         # options = UiAutomator2Options().load_capabilities(caps)
@@ -49,7 +50,10 @@ class WeworkApp(BasePage):
         self.driver.quit()
 
     def goto_main(self):
-        '''进入 app 首页'''
+        '''
+        进入 app 首页
+        返回首页实例
+        '''
         from app_po.page.main_page import MainPage
 
         return MainPage(self.driver)

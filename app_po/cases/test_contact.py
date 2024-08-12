@@ -3,11 +3,18 @@
 # @Author : tian
 # @File : test_contact.py
 # @desc :
+import allure
+from faker import Faker
+
 from app_po.base.wework_app import WeworkApp
 
-
+@allure.feature("企业微信联系人操作")
 class TestContact:
-
+    def setup_class(self):
+        """准备测试数据"""
+        fake = Faker("zh_CN")
+        self.name =fake.name()
+        self.phone = fake.phone_number()
     def setup_method(self):
         '''实例化 app'''
         self.app =WeworkApp()
@@ -17,6 +24,8 @@ class TestContact:
     def teardown_method(self):
         self.app.stop()
 
+    @allure.story("添加成员")
+    @allure.title("快捷添加成员冒烟用例")
     def test_add_member(self):
         '''
         添加成员冒烟用例
@@ -30,7 +39,7 @@ class TestContact:
         tips = self.main.goto_address_list_page()\
             .goto_add_member_page()\
             .goto_menual_input_page()\
-            .quick_input_member().get_tips()
+            .quick_input_member(self.name,self.phone).get_tips()
 
-        assert tips =="添加成功"
+        assert "添加成功" ==tips
 

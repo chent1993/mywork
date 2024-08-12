@@ -5,17 +5,116 @@
 # @desc :
 from appium.webdriver.webdriver import WebDriver
 
+from utils.log_utils import logger
+
 
 class BasePage:
     def __init__(self,driver:WebDriver=None):
         self.driver = driver
 
+    def find_ele(self,by,locate):
+        """
+        查找单个元素，并返回元素
+        :param by:定位方式
+        :param locate:元素定位表达式
+        :return:定位到的元素对象
+        """
+        step_text = f"查找单个元素的定位：{by},{locate}"
+        logger.info(step_text)
+        ele = self.driver.find_element(
+            by,locate
+        )
+        return ele
+    def find_eles(self,by,locate):
+        """
+        查找多个元素
+        :param by:定位方式
+        :param locate:元素定位表达式
+        :return:定位到的元素对象
+        """
+        step_text = f"查找多个元素的定位：{by},{locate}"
+        logger.info(step_text)
+        eles = self.driver.find_elements(
+            by,locate
+        )
+        return eles
 
+    def find_and_click(self,by,locate):
+        """
+        查找并点击元素
+        :param by:定位方式
+        :param locate:元素定位表达式
+        """
+        step_text = f"查找并点击元素：{by},{locate}"
+        logger.info(step_text)
+        self.find_ele(by,locate).click()
+
+    def find_and_sendKeys(self,by,locate,text):
+        """
+        查找元素并输入
+        :param by:定位方式
+        :param locate:元素定位表达式
+        :param text:输入的内容
+        :return:
+        """
+        step_text = f"查找元素：{by},{locate},并输入{text}"
+        logger.info(step_text)
+        self.find_ele(by, locate).sendKeys(text)
+
+    def set_implicitly_wait(self, time=1):
+        """
+        设置隐式等待
+        :param time: 隐式等待时间
+        """
+        logger.info(f"设置隐式等待时间为 {time}")
+        self.driver.implicitly_wait(time)
+
+    def wait_ele_located(self, by, value, timeout=10):
+        """
+        显式等待元素可以被定位
+        :param by: 元素定位方式
+        :param value: 元素定位表达式
+        :param timetout: 等待时间
+        :return: 定位到的元素对象
+        """
+        logger.info(f"显式等待 {by} {value} 出现，等待时间为 {timeout}")
+        ele = WebDriverWait(self.driver, timeout).until(
+            expected_conditions.invisibility_of_element_located((by, value))
+        )
+        return ele
+
+    def wait_ele_click(self, by, value, timeout=10):
+        """
+        显式等待元素可以被点击
+        :param by: 元素定位方式
+        :param value: 元素定位表达式
+        :param timeout: 等待时间
+        """
+        logger.info(f"显式等待 {by} {value} 出现，等待时间为 {timeout}")
+        ele = WebDriverWait(self.driver, timeout).until(
+            expected_conditions.element_to_be_clickable((by, value))
+        )
+        return ele
+
+    def wait_for_text(self, text, timeout=5):
+        """
+        等待某一个文本出现
+        """
+        logger.info(f"显式等待 {text} 出现，等待时间为 {timeout}")
+        try:
+            WebDriverWait(self.driver, timeout).until(
+                lambda x: x.find_element(AppiumBy.XPATH, f"//*[@text='{text}']")
+            )
+            logger.info(f"{text}元素出现")
+            return True
+        except:
+            logger.info(f"{text}元素未出现")
+            return False
 
     def swipe_window(self):
-        '''
+        """
         滑动界面
-        '''
+        """
         # 滑动操作
         # 获取设备的尺寸
         size = self.driver.get_window_size()
@@ -32,11 +131,11 @@ class BasePage:
         self.driver.swipe(start_x, start_y, end_x, end_y, 2000)
 
     def swipe_find(self, text, max_num=5):
-        '''
+        """
         滑动查找
         通过文本来查找元素，如果没有找到元素，就滑动，
         如果找到了，就返回元素
-        '''
+        """
         # 为了滑动操作更快速，不用等待隐式等待设置的时间
         self.driver.implicitly_wait(1)
         for num in range(max_num):
@@ -61,3 +160,14 @@ class BasePage:
         self.driver.implicitly_wait(15)
         # 抛出找不到元素的异常
         raise NoSuchElementException(f"滑动之后，未找到 {text} 元素")
+    def get_toast_tips(self):
+        """
+         获取 toast 文本
+        :return:
+        """
+        toast_text = self.find_ele(
+            AppiumBy.XPATH,
+            "//*[@class='android.widget.Toast']"
+        ).text
+        logger.info(f"获取到的 toast 文本为 {toast_text}")
+        return toast_text
