@@ -7,6 +7,7 @@
 企业微信 首页
 '''
 import allure
+from appium.webdriver.common.appiumby import AppiumBy
 
 from app_po.base.wework_app import WeworkApp
 from app_po.page.address_list_page import AddressListPage

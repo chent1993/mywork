@@ -3,9 +3,14 @@
 # @Author : tian
 # @File : base_page.py
 # @desc :
+from appium.webdriver.common.appiumby import AppiumBy
 from appium.webdriver.webdriver import WebDriver
+from selenium.common import NoSuchElementException
+from selenium.webdriver.support import expected_conditions
+from selenium.webdriver.support.wait import WebDriverWait
 
-from utils.log_utils import logger
+from app_po.utils.log_util import logger
+from app_po.utils.utils import Utils
 
 
 class BasePage:
@@ -59,7 +64,7 @@ class BasePage:
         """
         step_text = f"查找元素：{by},{locate},并输入{text}"
         logger.info(step_text)
-        self.find_ele(by, locate).sendKeys(text)
+        self.find_ele(by, locate).send_keys(text)
 
     def set_implicitly_wait(self, time=1):
         """
@@ -171,3 +176,37 @@ class BasePage:
         ).text
         logger.info(f"获取到的 toast 文本为 {toast_text}")
         return toast_text
+
+    def go_back(self, num=5):
+        '''
+        执行返回操作
+        :param num: 返回的次数
+        '''
+        logger.info(f"点击返回按钮 {num + 1} 次")
+        for i in range(num):
+            self.driver.back()
+
+    def screenshot(self):
+        '''
+        截图
+        :param path: 截图保存路径
+        '''
+        file_path = Utils.save_source_datas("images")
+        # 截图
+        self.driver.save_screenshot(file_path)
+        logger.info(f"截图保存的路径为{file_path}")
+        # 返回保存图片的路径
+        return file_path
+
+    def save_page_source(self):
+        '''
+        保存页面源码
+        :return: 返回源码文件路径
+        '''
+        file_path = Utils.save_source_datas("pagesource")
+        # 写 page source 文件
+        with open(file_path, "w", encoding="u8") as f:
+            f.write(self.driver.page_source)
+        logger.info(f"源码保存的路径为{file_path}")
+        # 返回 page source 保存路径
+        return file_path

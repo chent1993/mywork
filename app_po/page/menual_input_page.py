@@ -6,6 +6,8 @@
 '''手动添加成员页面'''
 import allure
 
+from appium.webdriver.common.appiumby import AppiumBy
+
 from app_po.base.wework_app import WeworkApp
 
 

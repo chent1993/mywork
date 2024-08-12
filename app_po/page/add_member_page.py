@@ -7,6 +7,7 @@
 添加成员 页面
 '''
 import allure
+from appium.webdriver.common.appiumby import AppiumBy
 
 from app_po.base.wework_app import WeworkApp
 from app_po.page.menual_input_page import MenualInputPage
