@@ -51,4 +51,5 @@ class WeworkApp(BasePage):
     def goto_main(self):
         '''进入 app 首页'''
         from app_po.page.main_page import MainPage
+
         return MainPage(self.driver)

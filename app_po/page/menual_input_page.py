@@ -16,5 +16,16 @@ class MenualInputPage(WeworkApp):
         '''
         #解决循环引用问题
         from app_po.page.add_member_page import AddMemberPage
-
+        # 输入姓名
+        self.driver.find_element(
+            AppiumBy.XPATH, "//*[@text='必填']"
+        ).send_keys(self.name)
+        # 输入手机号
+        self.driver.find_element(
+            AppiumBy.XPATH, "//*[@text='手机']/..//*[@text='选填']"
+        ).send_keys(self.phone)
+        # 点击保存
+        self.driver.find_element(
+            AppiumBy.XPATH, "//*[@text='保存']"
+        ).click()
         return AddMemberPage(self.driver)

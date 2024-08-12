@@ -12,8 +12,11 @@ from app_po.page.address_list_page import AddressListPage
 
 class MainPage(WeworkApp):
 
-
+    _CONTACT = AppiumBy.XPATH, "//*[@text='通讯录']"
 
     def goto_address_list_page(self):
-
+        '''进入 通讯录 页面'''
+        self.driver.find_element(
+            self._CONTACT
+        ).click()
         return AddressListPage(self.driver)
