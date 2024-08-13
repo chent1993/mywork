@@ -11,6 +11,7 @@ from appium.webdriver.common.appiumby import AppiumBy
 from app_po.base.wework_app import WeworkApp
 
 
+
 class MenualInputPage(WeworkApp):
     # 姓名输入框
     __INPUT_NAME =  AppiumBy.XPATH, "//*[@text='必填']"
@@ -18,6 +19,8 @@ class MenualInputPage(WeworkApp):
     __INPUT_PHONE = AppiumBy.XPATH, "//*[@text='手机']/..//*[@text='选填']"
     # 保存按钮
     __SAVE_BTN = AppiumBy.XPATH, "//*[@text='保存']"
+
+    __ADD_MEMBER_BTN = AppiumBy.XPATH, "//*[@text='添加成员']"
 
     @allure.step("快速输入成员姓名与手机号")
     def quick_input_member(self,name,phone,):
@@ -62,3 +65,14 @@ class MenualInputPage(WeworkApp):
         toast_tips = self.get_toast_tips()
 
         return toast_tips
+
+    @allure.step("通过点击 添加成员，返回添加成员页面")
+    def goto_add_member(self):
+        '''
+        返回 添加成员页面
+        :return:
+        '''
+        from app_po.page.add_member_page import AddMemberPage
+
+        self.find_and_click(*self.__ADD_MEMBER_BTN)
+        return AddMemberPage(self.driver)

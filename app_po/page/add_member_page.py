@@ -10,6 +10,7 @@ import allure
 from appium.webdriver.common.appiumby import AppiumBy
 
 from app_po.base.wework_app import WeworkApp
+from app_po.page.address_list_page import AddressListPage
 from app_po.page.menual_input_page import MenualInputPage
 
 
@@ -17,6 +18,7 @@ class AddMemberPage(WeworkApp):
     #手动输入添加按钮
     __MENUAL_INPUT_BTN = AppiumBy.XPATH, "//*[@text='手动输入添加']"
 
+    __ADD_MEMBER_BTN = AppiumBy.XPATH, "//*[@text='添加成员']"
 
     @allure.step("点击手动添加按钮，跳转到手动输入添加页面")
     def goto_menual_input_page(self):
@@ -41,3 +43,9 @@ class AddMemberPage(WeworkApp):
         toast_tips = self.get_toast_tips()
 
         return toast_tips
+
+    @allure.step("通过点击 添加成员，返回通讯录页面")
+    def goto_address_list(self):
+        #todo:两个 添加成员，定位需修改
+        self.find_and_click(*self.__ADD_MEMBER_BTN)
+        return AddressListPage(self.driver)

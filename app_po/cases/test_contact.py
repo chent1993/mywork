@@ -19,8 +19,12 @@ class TestContact:
         '''实例化 app'''
         self.app =WeworkApp()
         #启动app，进入首页
-        self.main = self.app.start().goto_main()
-
+        # self.main = self.app.start().goto_main()
+        self.address_list =self.app.start().goto_main().goto_address_list_page()
+        # self.menual_input = self.app.start().goto_main()\
+        #     .goto_address_list_page()\
+        #     .goto_add_member_page()\
+        #     .goto_menual_input_page()
     def teardown_method(self):
         self.app.stop()
 
@@ -36,29 +40,52 @@ class TestContact:
         5、验证出现添加成功的信息
         :return:
         '''
-        tips = self.main.goto_address_list_page()\
-            .goto_add_member_page()\
-            .goto_menual_input_page()\
-            .quick_input_member(self.name,self.phone).get_tips()
+        search_key = self.name
+        tips = self.address_list.goto_add_member_page().goto_menual_input_page().quick_input_member(search_key,self.phone).get_tips()
 
         assert "添加成功" ==tips
+        eles = self.address_list.search_member(search_key)
+        results = [ele.text for ele in eles]
+        #断言
+        assert search_key in results
+
     @allure.story("添加成员")
     @allure.title("快捷添加成员失败，手机号重复")
     def test_add_member_fail(self):
-        phone = self.phone
-        tips = self.main.goto_address_list_page() \
-            .goto_add_member_page() \
-            .goto_menual_input_page() \
-            .quick_input_member(self.name, phone).get_tips()
+
+        tips = self.address_list.goto_add_member_page().goto_menual_input_page().quick_input_member(self.name, self.phone).get_tips()
 
         assert "添加成功" == tips
 
-        fail_tips = self.main.goto_address_list_page() \
-            .goto_add_member_page() \
-            .goto_menual_input_page() \
-            .quick_input_member_fail(self.name,phone).get_add_member_fail_tips()
+        fail_tips = self.address_list.goto_add_member_page().goto_menual_input_page().quick_input_member_fail(self.name,self.phone).get_add_member_fail_tips()
 
         assert "手机已存在于通讯录，无法添加" == fail_tips
+
+
+    @allure.story("搜索成员")
+    @allure.title("搜索成员")
+    def test_search_member(self):
+        search_key = self.name
+        tips = self.address_list.goto_add_member_page().goto_menual_input_page().quick_input_member(search_key, self.phone).get_tips()
+
+        assert "添加成功" == tips
+        eles = self.address_list.search_member(search_key)
+
+    @allure.story("删除成员")
+    @allure.title("删除成员")
+    def test_delete_member(self):
+        search_key = self.name
+        ele = self.address_list.goto_add_member_page().goto_menual_input_page().quick_input_member(search_key, self.phone)
+
+        assert "添加成功" == ele.get_tips()
+        ele.goto_address_list().goto_user_info_page(search_key)\
+            .goto_personal_detail_page()\
+            .goto_edit_user_page()\
+            .delete_member()
+
+
+
+
 
 
 
