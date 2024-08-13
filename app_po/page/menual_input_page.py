@@ -47,4 +47,18 @@ class MenualInputPage(WeworkApp):
     @allure.step("快速输入成员姓名与手机号")
     def quick_input_member_fail(self,name,phone,):
 
-        return AddMemberPage(self.driver)
+        self.find_and_sendKeys(*self.__INPUT_NAME, name)
+
+        self.find_and_sendKeys(*self.__INPUT_PHONE, phone)
+
+        self.find_and_click(*self.__SAVE_BTN)
+        return self
+
+    @allure.step("获取 添加成员失败 toast 提示信息")
+    def get_add_member_fail_tips(self):
+        '''
+        获取toast 文本
+        '''
+        toast_tips = self.get_toast_tips()
+
+        return toast_tips
