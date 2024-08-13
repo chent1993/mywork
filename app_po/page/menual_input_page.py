@@ -43,3 +43,8 @@ class MenualInputPage(WeworkApp):
         # ).click()
         self.find_and_click(*self.__SAVE_BTN)
         return AddMemberPage(self.driver)
+
+    @allure.step("快速输入成员姓名与手机号")
+    def quick_input_member_fail(self,name,phone,):
+
+        return AddMemberPage(self.driver)
