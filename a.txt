@@ -1,1 +1,1 @@
-{"platformName": "Android", "appium:automationName": "uiautomator2", "appium:deviceName": "emulator-5554", "appium:appPackage": "com.tencent.wework", "appium:appActivity": ".launch.LaunchSplashActivity", "appium:noReset": True, "appium:forceAppLaunch": True}
+{"platformName": "Android", "appium:automationName": "uiautomator2", "appium:deviceName": "emulator-5554", "appium:appPackage": "com.tencent.wework", "appium:appActivity": ".launch.LaunchSplashActivity", "appium:noReset": true}

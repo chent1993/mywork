@@ -118,7 +118,7 @@ class BasePage:
 
     def swipe_window(self):
         """
-        滑动界面
+        滑动界面，向下滑动
         """
         # 滑动操作
         # 获取设备的尺寸
@@ -165,6 +165,15 @@ class BasePage:
         self.driver.implicitly_wait(15)
         # 抛出找不到元素的异常
         raise NoSuchElementException(f"滑动之后，未找到 {text} 元素")
+
+    # 滚动到页面顶部
+    def scroll_to_top(self):
+        y = self.driver.get_window_size()['height']
+        x = self.driver.get_window_size()['width']
+        y_coord = y * 0.5  # 可以根据需要调整起始点的位置
+        x_coord = x * 0.5
+        self.driver.swipe(x_coord, y_coord, x_coord, y, 1000)
+
     def get_toast_tips(self):
         """
          获取 toast 文本

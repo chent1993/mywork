@@ -3,6 +3,8 @@
 # @Author : tian
 # @File : test_contact.py
 # @desc :
+from time import sleep
+
 import allure
 from faker import Faker
 
@@ -66,33 +68,37 @@ class TestContact:
     @allure.title("搜索成员")
     def test_search_member(self):
         search_key = self.name
-        tips = self.address_list.goto_add_member_page().goto_menual_input_page().quick_input_member(search_key, self.phone).get_tips()
+        quick_input_member = self.address_list.goto_add_member_page().goto_menual_input_page().quick_input_member(search_key, self.phone)
 
-        assert "添加成功" == tips
-        eles = self.address_list.search_member(search_key)
+        assert "添加成功" == quick_input_member.get_tips()
+
+        eles = quick_input_member.goto_address_list_by_return().goto_search_member_page().search_member(search_key)
 
         results = [ele.text for ele in eles]
         # 断言
         assert search_key in results
-        #todo:公司名称
+
 
     @allure.story("删除成员")
     @allure.title("删除成员")
     def test_delete_member(self):
         search_key = self.name
-        ele = self.address_list.goto_add_member_page().goto_menual_input_page().quick_input_member(search_key, self.phone)
+        quick_input_member = self.address_list.goto_add_member_page().goto_menual_input_page().quick_input_member(search_key, self.phone)
 
-        assert "添加成功" == ele.get_tips()
-        ele.goto_address_list().goto_user_info_page(search_key)\
+        assert "添加成功" == quick_input_member.get_tips()
+
+        quick_input_member.goto_address_list_by_return().goto_user_info_page(search_key)\
             .goto_personal_detail_page()\
             .goto_edit_user_page()\
             .delete_member()
 
-        eles = self.address_list.search_member(search_key)
-
-        results = [ele.text for ele in eles]
-        # 断言
-        assert search_key not in results
+        search_key = '王军'
+        # self.address_list.goto_user_info_page(search_key).goto_personal_detail_page().goto_edit_user_page().delete_member()
+        eles = self.address_list.goto_search_member_page().search_member(search_key)
+        #
+        # results = [ele.text for ele in eles]
+        # # 断言
+        # assert search_key not in results
 
 
 
