@@ -71,6 +71,11 @@ class TestContact:
         assert "添加成功" == tips
         eles = self.address_list.search_member(search_key)
 
+        results = [ele.text for ele in eles]
+        # 断言
+        assert search_key in results
+        #todo:公司名称
+
     @allure.story("删除成员")
     @allure.title("删除成员")
     def test_delete_member(self):
@@ -82,6 +87,13 @@ class TestContact:
             .goto_personal_detail_page()\
             .goto_edit_user_page()\
             .delete_member()
+
+        eles = self.address_list.search_member(search_key)
+
+        results = [ele.text for ele in eles]
+        # 断言
+        assert search_key not in results
+
 
 
 
