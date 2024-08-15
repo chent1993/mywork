@@ -92,13 +92,13 @@ class TestContact:
             .goto_edit_user_page()\
             .delete_member()
 
-        search_key = '王军'
+        # search_key = '王军'
         # self.address_list.goto_user_info_page(search_key).goto_personal_detail_page().goto_edit_user_page().delete_member()
         eles = self.address_list.goto_search_member_page().search_member(search_key)
         #
-        # results = [ele.text for ele in eles]
-        # # 断言
-        # assert search_key not in results
+        results = [ele.text for ele in eles]
+        # 断言
+        assert search_key not in results
 
 
 

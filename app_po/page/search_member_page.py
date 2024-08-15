@@ -12,7 +12,7 @@ from app_po.base.wework_app import WeworkApp
 class SearchMemberPage(WeworkApp):
 
     __SEARCH_BTN = AppiumBy.XPATH, "//*[@text='搜索']"
-    __MEMBERS = AppiumBy.XPATH, "//*[@class='android.view.ViewGroup']//*[@class='android.view.ViewGroup']"
+    __MEMBERS = AppiumBy.XPATH, "//*[@class='android.view.ViewGroup']//*[@class='android.view.ViewGroup']/*/*"
 
     @allure.step("搜索成员")
     def search_member(self,search_key):
