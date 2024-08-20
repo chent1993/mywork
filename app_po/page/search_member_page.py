@@ -21,4 +21,5 @@ class SearchMemberPage(WeworkApp):
         #获取搜索结果
         eles = self.find_eles(self.__MEMBERS)
 
-        return eles
+        results = [ele.text for ele in eles]
+        return results

@@ -9,14 +9,18 @@ from selenium.common import NoSuchElementException
 from selenium.webdriver.support import expected_conditions
 from selenium.webdriver.support.wait import WebDriverWait
 
+from app_po.utils.error_handle import black_wrapper
 from app_po.utils.log_util import logger
 from app_po.utils.utils import Utils
 
 
 class BasePage:
+    '''
+    和driver强相关的内容都可以封装
+    '''
     def __init__(self,driver:WebDriver=None):
         self.driver = driver
-
+    @black_wrapper
     def find_ele(self,by,locate):
         """
         查找单个元素，并返回元素
@@ -30,6 +34,7 @@ class BasePage:
             by,locate
         )
         return ele
+    @black_wrapper
     def find_eles(self,by,locate):
         """
         查找多个元素
@@ -44,6 +49,7 @@ class BasePage:
         )
         return eles
 
+    @black_wrapper
     def find_and_click(self,by,locate):
         """
         查找并点击元素
@@ -54,6 +60,7 @@ class BasePage:
         logger.info(step_text)
         self.find_ele(by,locate).click()
 
+    @black_wrapper
     def find_and_sendKeys(self,by,locate,text):
         """
         查找元素并输入
@@ -66,6 +73,7 @@ class BasePage:
         logger.info(step_text)
         self.find_ele(by, locate).send_keys(text)
 
+    @black_wrapper
     def set_implicitly_wait(self, time=1):
         """
         设置隐式等待
@@ -73,7 +81,7 @@ class BasePage:
         """
         logger.info(f"设置隐式等待时间为 {time}")
         self.driver.implicitly_wait(time)
-
+    @black_wrapper
     def wait_ele_located(self, by, value, timeout=10):
         """
         显式等待元素可以被定位
@@ -87,7 +95,7 @@ class BasePage:
             expected_conditions.invisibility_of_element_located((by, value))
         )
         return ele
-
+    @black_wrapper
     def wait_ele_click(self, by, value, timeout=10):
         """
         显式等待元素可以被点击
@@ -100,7 +108,7 @@ class BasePage:
             expected_conditions.element_to_be_clickable((by, value))
         )
         return ele
-
+    @black_wrapper
     def wait_for_text(self, text, timeout=5):
         """
         等待某一个文本出现
@@ -116,6 +124,7 @@ class BasePage:
             logger.info(f"{text}元素未出现")
             return False
 
+    @black_wrapper
     def swipe_window(self):
         """
         滑动界面，向下滑动
@@ -135,6 +144,7 @@ class BasePage:
         # swipe(起始x坐标，起始y坐标，结束x坐标，结束y坐标，滑动时间（单位毫秒）)
         self.driver.swipe(start_x, start_y, end_x, end_y, 2000)
 
+    @black_wrapper
     def swipe_find(self, text, max_num=5):
         """
         滑动查找
@@ -167,6 +177,7 @@ class BasePage:
         raise NoSuchElementException(f"滑动之后，未找到 {text} 元素")
 
     # 滚动到页面顶部
+
     def scroll_to_top(self):
         y = self.driver.get_window_size()['height']
         x = self.driver.get_window_size()['width']
@@ -174,6 +185,16 @@ class BasePage:
         x_coord = x * 0.5
         self.driver.swipe(x_coord, y_coord, x_coord, y, 1000)
 
+    def get_ele_text(self,by,locate):
+        '''
+        获取文本信息
+        :param by:
+        :param locate:
+        :return:
+        '''
+        text = self.find_ele(by,locate).text
+        logger.info(f"获取到的文本为 {text}")
+        return text
     def get_toast_tips(self):
         """
          获取 toast 文本

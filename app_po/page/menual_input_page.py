@@ -21,6 +21,8 @@ class MenualInputPage(WeworkApp):
     __SAVE_BTN = AppiumBy.XPATH, "//*[@text='保存']"
 
     __ADD_MEMBER_BTN = AppiumBy.XPATH, "//*[@text='添加成员']"
+    #todo:补充
+    __FAIL_TIPS = AppiumBy.XPATH, ""
 
     @allure.step("快速输入成员姓名与手机号")
     def quick_input_member(self,name,phone,):
@@ -62,7 +64,7 @@ class MenualInputPage(WeworkApp):
         '''
         获取toast 文本
         '''
-        toast_tips = self.get_toast_tips()
+        toast_tips = self.get_ele_text(*self.__FAIL_TIPS)
 
         return toast_tips
 

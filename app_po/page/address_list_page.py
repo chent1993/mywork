@@ -17,7 +17,6 @@ from app_po.page.user_info_page import UserInfoPage
 
 class AddressListPage(WeworkApp):
     __ADD_MEMBER_TEXT = "添加成员"
-    __SEARCH_INPUT = AppiumBy.XPATH, "//*[@text='测试6部']/../../../following-sibling::*/*[1]"
 
     @allure.step("点击添加成员按钮，跳转到添加成员页面")
     def goto_add_member_page(self):
@@ -28,7 +27,9 @@ class AddressListPage(WeworkApp):
 
         return AddMemberPage(self.driver)
 
-    def goto_search_member_page(self):
+    def goto_search_member_page(self,compony):
+        __SEARCH_INPUT = AppiumBy.XPATH, f"//*[@text='{compony}']/../../../following-sibling::*/*[1]"
+
         self.find_and_click(*self.__SEARCH_INPUT)
         return SearchMemberPage(self.driver)
 

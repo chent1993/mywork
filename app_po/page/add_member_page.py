@@ -20,6 +20,7 @@ class AddMemberPage(WeworkApp):
 
     __RETURN_BTN = AppiumBy.XPATH, "//*[@class='android.widget.LinearLayout']/*[@text='添加成员']/../../../preceding-sibling::*[1]"
 
+    __SUCCESS_TIPS = AppiumBy.XPATH,"//*[@class='android.widget.Toast']"
     @allure.step("点击手动添加按钮，跳转到手动输入添加页面")
     def goto_menual_input_page(self):
         '''
@@ -40,7 +41,7 @@ class AddMemberPage(WeworkApp):
         获取toast 文本
         '''
         # toast_tips = self.driver.find_element(self.__ADD_MEMBER_TOAST).text
-        toast_tips = self.get_toast_tips()
+        toast_tips = self.get_ele_text(*self.__SUCCESS_TIPS)
 
         return toast_tips
 

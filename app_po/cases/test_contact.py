@@ -17,6 +17,7 @@ class TestContact:
         fake = Faker("zh_CN")
         self.name =fake.name()
         self.phone = fake.phone_number()
+        self.company = '测试6部'
     def setup_method(self):
         '''实例化 app'''
         self.app =WeworkApp()
@@ -46,8 +47,8 @@ class TestContact:
         tips = self.address_list.goto_add_member_page().goto_menual_input_page().quick_input_member(search_key,self.phone).get_tips()
 
         assert "添加成功" ==tips
-        eles = self.address_list.search_member(search_key)
-        results = [ele.text for ele in eles]
+        results = self.address_list.goto_search_member_page(self.company).search_member(search_key)
+
         #断言
         assert search_key in results
 
@@ -72,11 +73,11 @@ class TestContact:
 
         assert "添加成功" == quick_input_member.get_tips()
 
-        eles = quick_input_member.goto_address_list_by_return().goto_search_member_page().search_member(search_key)
+        results = quick_input_member.goto_address_list_by_return().goto_search_member_page(self.company).search_member(search_key)
 
-        results = [ele.text for ele in eles]
         # 断言
         assert search_key in results
+        assert self.company in results
 
 
     @allure.story("删除成员")
@@ -92,11 +93,8 @@ class TestContact:
             .goto_edit_user_page()\
             .delete_member()
 
-        # search_key = '王军'
-        # self.address_list.goto_user_info_page(search_key).goto_personal_detail_page().goto_edit_user_page().delete_member()
-        eles = self.address_list.goto_search_member_page().search_member(search_key)
-        #
-        results = [ele.text for ele in eles]
+        results = self.address_list.goto_search_member_page(self.company).search_member(search_key)
+
         # 断言
         assert search_key not in results
 
