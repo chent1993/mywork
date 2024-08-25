@@ -1,0 +1,5 @@
+baseurl : 'https://qyapi.weixin.qq.com/cgi-bin'
+corpid :
+  test : 'wwdbab80f3359105f4'
+corpsecret :
+  contacts : 'HZ4jjqlrKMQzhfklDsSKL7qQpjihzYbcM8zP6R6k5BY'
