@@ -52,8 +52,8 @@ class TestDepartment:
 
         :return:
         '''
-    @allure.title("添加部门成功")
-    @allure.description("添加部门")
+    @allure.title("添加部门")
+    @allure.description("添加部门成功")
     def test_create_department(self):
         '''
         :return:
@@ -63,9 +63,17 @@ class TestDepartment:
         # 断言接口响应体
         assert res.json().get("errcode") == 0
 
+        res = self.department.simplelist(self.depart_id)
 
+        ids = [i["id"] for i in res.json().get("department_id")]
+        assert self.depart_id in ids
+        res = self.department.delete(self.depart_id)
 
+    @allure.title("获取部门ID列表")
+    @allure.description("获取部门ID列表成功")
     def test_simplelist(self):
+        #创建部门
+        self.department.create(self.create_data)
         res = self.department.simplelist(self.depart_id)
 
         # ids = [ i["id"] for i in res.json().get("department_id")]
@@ -82,12 +90,19 @@ class TestDepartment:
 
 
 
-
+    @allure.title("更新部门")
+    @allure.description("更新部门成功")
     def test_update_department(self):
+        # 创建部门
+        self.department.create(self.create_data)
+
         res =self.department.update(self.update_data)
         assert res.status_code == 200
         # 断言接口响应体
         assert res.json().get("errcode") == 0
+
+        #删除部门
+        res = self.department.delete(self.depart_id)
 
         # get_res = self.department.get(self.depart_id)
         #
@@ -96,8 +111,14 @@ class TestDepartment:
         # assert self.update_name == name
 
     # @pytest.mark.skip
+    @allure.title("删除部门")
+    @allure.description("删除部门成功")
     def test_delete_department(self):
-        res = self.department.delete(self.depart_id)
-        assert res.status_code == 200
+        # 创建部门
+        self.department.create(self.create_data)
+
+        del_res = self.department.delete(self.depart_id)
+        assert del_res.status_code == 200
         # 断言接口响应体
-        assert res.json().get("errcode") == 0
+        assert del_res.json().get("errcode") == 0
+

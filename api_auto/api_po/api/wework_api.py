@@ -6,6 +6,7 @@
 import requests
 
 from api_auto.api_po.api.base_api import BaseApi
+from api_auto.api_po.conftest import global_env
 from api_auto.api_po.utils.utils import Utils
 
 
@@ -47,7 +48,7 @@ class WeworkApi(BaseApi):
         获取配置
         :return:
         '''
-        file_path = f"{Utils.get_root_path()}/../config/test.yaml"
+        file_path = f"{Utils.get_root_path()}/../config/{global_env.get('env')}.yaml"
         yaml_data = Utils.get_yaml_data(file_path)
         print(yaml_data)
         return yaml_data

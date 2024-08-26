@@ -3,6 +3,7 @@
 # @Author : tian
 # @File : department_api.py
 # @desc :
+import allure
 import requests
 
 from api_auto.api_po.api.wework_api import WeworkApi
@@ -17,6 +18,7 @@ class DepartmentApi(WeworkApi):
         self.corpsecret = self.data.get("corpsecret").get("contacts")
         self.token = self.get_token(self.corpsecret)
 
+    @allure.step("创建部门")
     def create(self,data):
         '''
         创建部门
@@ -34,6 +36,7 @@ class DepartmentApi(WeworkApi):
         # res = requests.post(create_url, json=data, verify=False)
         return res
 
+    @allure.step("更新部门")
     def update(self,data):
         '''
         修改部门
@@ -52,6 +55,7 @@ class DepartmentApi(WeworkApi):
         # res = requests.post(update_url, json=data, verify=False)
         return res
 
+    @allure.step(f"删除部门{id}")
     def delete(self,id):
         '''
         删除部门
@@ -68,6 +72,8 @@ class DepartmentApi(WeworkApi):
         res = self.send(req)
         # res = requests.get(delete_url, verify=False)
         return res
+
+    @allure.step(f"获取部门ID{id}")
     def simplelist(self,id):
         '''
         查询子部门ID列表
