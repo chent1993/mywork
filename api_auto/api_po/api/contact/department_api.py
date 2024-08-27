@@ -101,8 +101,3 @@ class DepartmentApi(WeworkApi):
         res = requests.get(get_url, verify=False)
         logger.info(f"查询结果：{res.text}")
         return res
-    def clear(self):
-        '''
-        清空部门
-        :return:
-        '''
