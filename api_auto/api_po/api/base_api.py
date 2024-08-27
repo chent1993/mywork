@@ -7,6 +7,7 @@
 API 基础类
 '''
 import requests
+import urllib3
 
 
 class BaseApi:
@@ -15,6 +16,7 @@ class BaseApi:
         发送requests请求
         :return:
         '''
+        urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
         r = requests.request(**req)
         return r
 
