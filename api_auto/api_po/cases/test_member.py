@@ -65,7 +65,7 @@ class TestDepartment:
         ids = jsonpath.jsonpath(res.json(),"$.dept_user..userid")
 
         assert self.userid in ids
-        assert JSONSchemaUtils().schema_validate(res.json(),self.schema)
+        assert JSONSchemaUtils().validate_schema(res.json(),self.schema)
 
 
 

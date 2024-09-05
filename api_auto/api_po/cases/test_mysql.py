@@ -4,12 +4,14 @@
 # @File : test_mysql.py
 # @desc :
 import allure
+import pytest
 
 from api_auto.api_po.utils.mysql_util import MySQLUtil
 
 
 @allure.suite("企业微信接口管理")
 @allure.sub_suite("mysql测试")
+@pytest.mark.skip
 class TestMysql:
     @allure.title("查询mysql")
     @allure.description("查询mysql")

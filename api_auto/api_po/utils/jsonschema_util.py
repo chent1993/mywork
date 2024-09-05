@@ -19,6 +19,9 @@ class JSONSchemaUtils:
     def validate_schema(cls, data_obj, schema):
         """
         通过schema验证数据
+        :param data_obj:
+        :param schema:
+        :return:
         """
         # 问题，在实际使用的过程中，不想直接抛出错误，而是返回是否成功的标志（T 或 F）
         try:
@@ -33,6 +36,12 @@ class JSONSchemaUtils:
 
     @classmethod
     def generate_jsonschema_by_file(cls, obj, file_path):
+        """
+
+        :param obj:
+        :param file_path:
+        :return:
+        """
         json_schema_data = cls.generate_jsonschema(obj)
         with open(file_path, "w") as f:
             json.dump(json_schema_data, f)
@@ -41,6 +50,8 @@ class JSONSchemaUtils:
     def generate_jsonschema(cls, obj):
         """
         生成jsonschema 数据
+        :param obj:
+        :return:
         """
         # 实例化 SchemaBuilder 类
         builder = SchemaBuilder()
@@ -62,7 +73,7 @@ obj = {
 }
 
 # 生成 JSON schema
-schema = JSONSchemaUtils.generate_schema(obj)
+schema = JSONSchemaUtils.generate_jsonschema(obj)
 
 # 打印生成的 JSON schema
 print(schema)
@@ -77,7 +88,7 @@ obj_to_validate = {
 }
 
 # 验证对象与生成的 JSON schema 结构一致性
-is_valid = JSONSchemaUtils.schema_validate(obj_to_validate, schema)
+is_valid = JSONSchemaUtils.validate_schema(obj_to_validate, schema)
 
 if is_valid:
     print("Object is valid according to JSON schema.")

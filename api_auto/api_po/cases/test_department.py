@@ -85,7 +85,7 @@ class TestDepartment:
         # assert self.depart_id in ids
 
         #jsonschema
-        assert JSONSchemaUtils().schema_validate(res.json(),self.schema)
+        assert JSONSchemaUtils().validate_schema(res.json(),self.schema)
 
 
 
